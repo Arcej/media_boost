@@ -4,22 +4,22 @@ require 'pry' #ruby REPL
 require 'rb-readline' #ruby IRB
 require 'awesome_print'
 require_relative 'credentials'
-#thor
 
 username = $username_GE
 password = $password_GE
-user = "milenamontalvo_"
+user = "black_moon_salon"
 follow_counter = 0
 MAX_FOLLOWS = 39
 
 #%w[--headless --disable-gpu --no-sandbox] para no mostrar el navegador
 #open browser, navigate to login page
 browser = Watir::Browser.new :chrome#, switches: %w[--headless --disable-gpu --no-sandbox]
-browser.goto "instagram.com/accounts/login/"
 screen_width = browser.execute_script("return screen.width;")
 screen_height = browser.execute_script("return screen.height;")
 browser.driver.manage.window.resize_to(screen_width,screen_height)
 browser.driver.manage.window.move_to(0,0)
+browser.goto "instagram.com/accounts/login/"
+
 
  #navigate to username and password fields inject info
  ap "loggin in.."
@@ -39,11 +39,9 @@ ap "Succesfull Login #{username}"
     browser.a(:class=>"_t98z6").click
     sleep(3)
 
-#loop do
+loop do
   while follow_counter < 701 do
-    #def follow_protocol
-      #35.times
-      35.times do |follow|
+      10.times do |follow|
         browser.driver.execute_script("window.scrollBy(0,document.body.scrollHeight)")
         sleep(2)
 
@@ -60,10 +58,9 @@ ap "Succesfull Login #{username}"
       ap "===============#{Time.now}==============="
       #break if follow_counter == 39
       ap "People Followed #{follow_counter}"
-      sleep(1200)
-    #end
+      sleep(120)
   end
-#end
+end
 
 
 Pry.start(binding)

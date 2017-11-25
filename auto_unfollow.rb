@@ -7,19 +7,17 @@ require_relative 'credentials'
 
 username = $username_GE
 password = $password_GE
-#follows = "People Followed"
 user = "goldenestate_mx"
 unfollow_counter = 0
 MAX_UNFOLLOWS = 39
 
 #open browser, navigate to login page
 browser = Watir::Browser.new :chrome#, switches: %w[--headless --disable-gpu --no-sandbox]
-browser.goto "instagram.com/accounts/login/"
 screen_width = browser.execute_script("return screen.width;")
 screen_height = browser.execute_script("return screen.height;")
 browser.driver.manage.window.resize_to(screen_width,screen_height)
 browser.driver.manage.window.move_to(0,0)
-
+browser.goto "instagram.com/accounts/login/"
  #navigate to username and password fields inject info
  ap "loggin in.."
  browser.text_field(:name =>"username" ).set "#{username}"
@@ -38,10 +36,11 @@ ap "Succesfull Login #{username}"
     browser.a(:href=>"/#{user}/following/").click
     sleep(3)
 
-#loop do
+loop do
+
   while unfollow_counter < 601 do
 
-    14.times do |unfollow|
+    5.times do |unfollow|
       browser.driver.execute_script("window.scrollBy(0,document.body.scrollHeight)")
       sleep(3)
 
@@ -55,9 +54,9 @@ ap "Succesfull Login #{username}"
     end
     ap "People Unfollowed #{unfollow_counter}"
     ap "===============#{Time.now}==============="
-    sleep(600)
+    sleep(120)
   end
 
-#end
+end
 
 Pry.start(binding)
