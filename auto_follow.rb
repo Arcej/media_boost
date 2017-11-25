@@ -8,18 +8,18 @@ require_relative 'credentials'
 
 username = $username_GE
 password = $password_GE
-
-#follows = "People Followed"
 user = "milenamontalvo_"
-followers = "Followers"
 follow_counter = 0
-unfollow_counter = 0
 MAX_FOLLOWS = 39
-MAX_UNFOLLOWS = 35
 
+#%w[--headless --disable-gpu --no-sandbox] para no mostrar el navegador
 #open browser, navigate to login page
-browser = Watir::Browser.new :chrome, switches: %w[--headless --disable-gpu --no-sandbox]
+browser = Watir::Browser.new :chrome#, switches: %w[--headless --disable-gpu --no-sandbox]
 browser.goto "instagram.com/accounts/login/"
+screen_width = browser.execute_script("return screen.width;")
+screen_height = browser.execute_script("return screen.height;")
+browser.driver.manage.window.resize_to(screen_width,screen_height)
+browser.driver.manage.window.move_to(0,0)
 
  #navigate to username and password fields inject info
  ap "loggin in.."
@@ -40,28 +40,29 @@ ap "Succesfull Login #{username}"
     sleep(3)
 
 #loop do
-
-while follow_counter < 701 do
-
-    35.times do |i|
-      browser.driver.execute_script("window.scrollBy(0,document.body.scrollHeight)")
-      sleep(2)
+  while follow_counter < 701 do
+    #def follow_protocol
+      #35.times
+      35.times do |follow|
+        browser.driver.execute_script("window.scrollBy(0,document.body.scrollHeight)")
+        sleep(2)
 
                    #click follow
-      if browser.button(:class=>"_qv64e _gexxb _4tgw8 _njrw0").exists?
-        browser.button(:class=>"_qv64e _gexxb _4tgw8 _njrw0").click
-        follow_counter += 1
+        if browser.button(:class=>"_qv64e _gexxb _4tgw8 _njrw0").exists?
+          browser.button(:class=>"_qv64e _gexxb _4tgw8 _njrw0").click
+          follow_counter += 1
 
-        ap "Follows made #{follow_counter}"
-
+          ap "Follows made #{follow_counter}"
+        else
+          ap "No media to follow"
+        end
       end
-    end
-    ap "===============#{Time.now}==============="
-    #break if follow_counter == 39
-    #break if unfollow_counter >= MAX_UNFOLLOWS
-    ap "People Followed #{follow_counter}"
-    sleep(1200)
-end
+      ap "===============#{Time.now}==============="
+      #break if follow_counter == 39
+      ap "People Followed #{follow_counter}"
+      sleep(1200)
+    #end
+  end
 #end
 
 

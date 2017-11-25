@@ -14,3 +14,6 @@ $password_onava = "onava20177"
 
 $username_blackmoon = "black_moon_salon"
 $password_blackmoon = "mantequilla"
+
+$username_genaro = "genaro9403"
+$password_genaro = "alkimista1"

@@ -4,15 +4,19 @@ require 'rb-readline' #ruby IRB
 require 'awesome_print'
 require_relative 'credentials'
 
-username = 'goldenstate_mx@outlook.com'
-password = 'jjgoldenstate10'
+username = $username_GE
+password = $password_GE
 like_counter = 0
 num_of_rounds = 0
 max_likes = 1000
 
-#open browser, navigate to login page
-browser = Watir::Browser.new :chrome, switches: ['--incognito']
+#open browser and navigate to login page
+browser = Watir::Browser.new :chrome#, switches: ['--incognito']
 browser.goto "instagram.com/accounts/login/"
+screen_width = browser.execute_script("return screen.width;")
+screen_height = browser.execute_script("return screen.height;")
+browser.driver.manage.window.resize_to(screen_width,screen_height)
+browser.driver.manage.window.move_to(0,0)
 
  #navigate to username and password fields inject info
  ap "loggin in.."
@@ -22,29 +26,27 @@ browser.goto "instagram.com/accounts/login/"
 #click login button
 browser.button(:class => '_qv64e _gexxb _4tgw8 _njrw0').click
 sleep(2)
+ap "Succesfull login"
 
-while true
+while like_counter <= 999 do
 
-  3.times do |i|
+  50.times do |i|
     browser.driver.execute_script("window.scrollBy(0,document.body.scrollHeight)")
-    sleep(1)
-  end
 
-#_8scx2
-  if browser.span(:class => "coreSpriteHeartOpen" ).exists?
-    browser.spans(:class => "coreSpriteHeartOpen" ).each { |val|
-      val.click
+
+  if browser.span(:class => "_8scx2 coreSpriteHeartOpen" ).exists?
+    browser.span(:class => "_8scx2 coreSpriteHeartOpen" ).click
       like_counter += 1
-    }
+
     ap "Photos liked: #{like_counter}"
   else
     ap "No media to like"
   end
     num_of_rounds += 1
     puts "=============== #{like_counter / num_of_rounds} likes per round (on average)============="
-
+  end
     break if like_counter >= max_likes
-  sleep(30)
+  sleep(1000)
 
 end
 
